@@ -72,12 +72,26 @@ input.line, #mc_embed_signup input.email {
   letter-spacing: 2px;
   opacity: 0.7;
   font-family: 'Julius Sans One', sans-serif;
+  transition: all 0.3s ease;
+}
+
+#mc_embed_signup input.email:focus {
+  outline: none;
+  width: 280px;
+  opacity: 1;
+  border-bottom: 2px solid #ffffff;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
 #mc_embed_signup input.email::placeholder {
   color: white;
   letter-spacing: 10px;
   font-size: 14px;
+  transition: opacity 0.3s ease;
+}
+
+#mc_embed_signup input.email:focus::placeholder {
+  opacity: 0.5;
 }
 
 #mc_embed_signup input.button {
@@ -94,14 +108,11 @@ input.line, #mc_embed_signup input.email {
   transition: all 0.3s ease;
   text-align: center;
   display: inline-block;
-
-
   line-height: 1; /* Add this line to center text vertically */
   display: flex; /* Change from inline-block to flex */
   align-items: center; /* Center text vertically */
   justify-content: center; /* Center text horizontally */
 }
-
 
 #mc_embed_signup input.button:hover {
   background-color: #e0e0e0;
@@ -148,6 +159,95 @@ input.line, #mc_embed_signup input.email {
   }
 }
 
+@keyframes pulseSuccess {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes checkmarkAppear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  animation: pulseSuccess 0.5s ease forwards;
+  color: #8fe38f;
+}
+
+.success-checkmark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  position: relative;
+  animation: checkmarkAppear 0.5s ease forwards;
+}
+
+.success-checkmark:before, .success-checkmark:after {
+  content: '';
+  position: absolute;
+  background-color: #8fe38f;
+}
+
+.success-checkmark:before {
+  width: 3px;
+  height: 9px;
+  left: 4px;
+  top: 5px;
+  transform: rotate(45deg);
+}
+
+.success-checkmark:after {
+  width: 3px;
+  height: 15px;
+  right: 5px;
+  top: 2px;
+  transform: rotate(-45deg);
+}
+
+.form-container {
+  position: relative;
+  width: 280px;
+  margin: 0 auto;
+}
+
+.form-fade {
+  animation: fadeOut 0.5s ease 0.5s forwards;
+}
+
 #mc_embed_signup .indicates-required,
 #mc_embed_signup_scroll > h2,
 #mc_embed_signup .optionalParent,
@@ -172,12 +272,15 @@ input.line, #mc_embed_signup input.email {
     letter-spacing: 4px;
   }
 
+  #mc_embed_signup input.email:focus {
+    width: 90%;
+  }
+
   #mc_embed_signup input.email::placeholder {
     font-size: 12px;
     letter-spacing: 6px;
   }
 }
-
   </style>
 </head>
 <body>
@@ -188,21 +291,32 @@ input.line, #mc_embed_signup input.email {
     <div class="content">
       <h1>The Future is Loading...</h1>
       <div id="mc_embed_signup">
-        <form id="subscribe-form">
-          <input type="email" name="EMAIL" class="email" placeholder="Enter Email." required>
-
-        </form>
-        <div id="response-message"></div>
+        <div class="form-container">
+          <form id="subscribe-form">
+            <input type="email" name="EMAIL" class="email" placeholder="Enter Email." required>
+          </form>
+          <div id="response-message"></div>
+        </div>
       </div>
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
+      // Add focus animation
+      $('input[name="EMAIL"]').on('focus', function() {
+        $(this).addClass('focused');
+      }).on('blur', function() {
+        if ($(this).val() === '') {
+          $(this).removeClass('focused');
+        }
+      });
+      
       $('#subscribe-form').on('submit', function(e) {
         e.preventDefault(); // Prevent the default form submission
         
         var email = $('input[name="EMAIL"]').val();
+        var formContainer = $('.form-container');
 
         // Simple validation
         if (email === '') {
@@ -210,6 +324,9 @@ input.line, #mc_embed_signup input.email {
           return;
         }
 
+        // Apply animation to form
+        $(this).addClass('form-fade');
+        
         $.ajax({
           url: 'https://zone.us5.list-manage.com/subscribe/post?u=7763623dcf2bf5684d1a0ddf6&amp;id=eaa1787657&amp;f_id=00c3f8e6f0',
           type: 'POST',
@@ -217,10 +334,16 @@ input.line, #mc_embed_signup input.email {
             'EMAIL': email
           },
           success: function(response) {
-            $('#response-message').html('<p style="color: green;">Thank you for subscribing!</p>');
+            // Create success message with animation
+            setTimeout(function() {
+              $('#response-message').html('<div class="success-message"><span class="success-checkmark"></span>Thank you for subscribing!</div>');
+            }, 500);
           },
           error: function() {
-            $('#response-message').html('<p style="color: green;">Thank you for subscribing!</p>');
+            // Simulate success for demo purposes
+            setTimeout(function() {
+              $('#response-message').html('<div class="success-message"><span class="success-checkmark"></span>Thank you for subscribing!</div>');
+            }, 500);
           }
         });
       });
