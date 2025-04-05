@@ -2,352 +2,249 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Novus Landing Page</title>
   <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" rel="stylesheet" />
   <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
+
   <style>
-   body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: black;
-  font-family: 'Julius Sans One', sans-serif;
-  color: #e0e0e0;
-  text-align: center;
-  overflow: hidden;
-}
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Julius Sans One', sans-serif;
+      background-color: black;
+      overflow: hidden;
+    }
 
-.overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* Center align all content */
-  z-index: 2;
-}
+    .background-image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60vw;
+      height: 80vh;
+      transform: translate(-50%, -50%);
+      background-image: url('coolbg.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      z-index: 0;
+    }
 
-.logo {
-  position: absolute;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  max-width: 40vw;
-}
+    canvas#particle-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
 
-.content {
-  position: relative;
-  z-index: 3;
-  opacity: 0;
-  animation: slideInFromBottom 1.5s ease-out forwards;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 250px; /* Lower the content */
-}
+    .black-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 2;
+    }
 
-h1 {
-  font-size: 24px;
-  letter-spacing: 10px;
-  margin-bottom: 0px; /* Increased space between text elements */
-}
+    .overlay {
+      position: relative;
+      z-index: 3;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-input.line, #mc_embed_signup input.email {
-  margin-top: 10px; /* Reduced top margin */
-  padding-bottom: 5px;
-  width: 250px;
-  border: none;
-  border-bottom: 2px solid #e0e0e0;
-  background-color: transparent;
-  color: white;
-  text-align: center;
-  font-size: 14px;
-  letter-spacing: 2px;
-  opacity: 0.7;
-  font-family: 'Julius Sans One', sans-serif;
-  transition: all 0.3s ease;
-}
+    .logo {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      max-width: 40vw;
+    }
 
-#mc_embed_signup input.email:focus {
-  outline: none;
-  width: 280px;
-  opacity: 1;
-  border-bottom: 2px solid #ffffff;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
-}
+    .content {
+      text-align: center;
+      margin-top: 200px;
+      opacity: 0;
+      animation: slideInFromBottom 1.5s ease-out forwards;
+    }
 
-#mc_embed_signup input.email::placeholder {
-  color: white;
-  letter-spacing: 10px;
-  font-size: 14px;
-  transition: opacity 0.3s ease;
-}
+    @keyframes typing {
+      0% { width: 0; }
+      100% { width: 100%; }
+    }
 
-#mc_embed_signup input.email:focus::placeholder {
-  opacity: 0.5;
-}
+    h1 {
+      color: white;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 0;
+      animation: typingAnimation 3s steps(30) 1s forwards;
+      font-size: 24px;
+      letter-spacing: 10px;
+    }
 
-#mc_embed_signup input.button {
-  margin-top: 15px; /* Adjust this margin to align the button better */
-  background-color: transparent;
-  border: 2px solid #e0e0e0;
-  color: #e0e0e0;
-  padding: 10px 30px;
-  font-family: 'Julius Sans One', sans-serif;
-  font-size: 14px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
-  display: inline-block;
-  line-height: 1; /* Add this line to center text vertically */
-  display: flex; /* Change from inline-block to flex */
-  align-items: center; /* Center text vertically */
-  justify-content: center; /* Center text horizontally */
-}
+    @keyframes typingAnimation {
+      0% { width: 0; }
+      100% { width: 100%; }
+    }
 
-#mc_embed_signup input.button:hover {
-  background-color: #e0e0e0;
-  color: black;
-}
+    .typing {
+      display: inline-block;
+      white-space: nowrap;
+      width: 0;
+      animation: typingEffect 3s steps(30) forwards;
+      animation-timing-function: steps(30, end);
+    }
 
-.background-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('coolbg.png') no-repeat center center;
-  background-size: cover;
-  z-index: 1;
-}
+    @keyframes typingEffect {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
 
-@media (min-width: 769px) {
-  .background-image {
-    width: 60%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
+    input.email {
+      margin-top: 10px;
+      padding-bottom: 5px;
+      width: 250px;
+      border: none;
+      border-bottom: 2px solid #e0e0e0;
+      background-color: transparent;
+      color: white;
+      text-align: center;
+      font-size: 14px;
+      letter-spacing: 2px;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
 
-.black-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 2;
-}
+    input.email:focus {
+      outline: none;
+      width: 280px;
+      opacity: 1;
+      border-bottom: 2px solid #ffffff;
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    }
 
-@keyframes slideInFromBottom {
-  0% {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+    input.email::placeholder {
+      color: white;
+      letter-spacing: 10px;
+      font-size: 14px;
+      transition: opacity 0.3s ease;
+    }
 
-@keyframes pulseSuccess {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+    input.email:focus::placeholder {
+      opacity: 0.5;
+    }
 
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-@keyframes checkmarkAppear {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.success-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 15px;
-  animation: pulseSuccess 0.5s ease forwards;
-  color: #8fe38f;
-}
-
-.success-checkmark {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-  position: relative;
-  animation: checkmarkAppear 0.5s ease forwards;
-}
-
-.success-checkmark:before, .success-checkmark:after {
-  content: '';
-  position: absolute;
-  background-color: #8fe38f;
-}
-
-.success-checkmark:before {
-  width: 3px;
-  height: 9px;
-  left: 4px;
-  top: 5px;
-  transform: rotate(45deg);
-}
-
-.success-checkmark:after {
-  width: 3px;
-  height: 15px;
-  right: 5px;
-  top: 2px;
-  transform: rotate(-45deg);
-}
-
-.form-container {
-  position: relative;
-  width: 280px;
-  margin: 0 auto;
-}
-
-.form-fade {
-  animation: fadeOut 0.5s ease 0.5s forwards;
-}
-
-#mc_embed_signup .indicates-required,
-#mc_embed_signup_scroll > h2,
-#mc_embed_signup .optionalParent,
-.refferal_badge {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  h1 {
-    font-size: 16px;
-    letter-spacing: 6px;
-  }
-
-  .logo {
-    top: 20px;
-    width: 120px;
-  }
-
-  input.line, #mc_embed_signup input.email {
-    width: 80%;
-    font-size: 12px;
-    letter-spacing: 4px;
-  }
-
-  #mc_embed_signup input.email:focus {
-    width: 90%;
-  }
-
-  #mc_embed_signup input.email::placeholder {
-    font-size: 12px;
-    letter-spacing: 6px;
-  }
-}
+    @keyframes slideInFromBottom {
+      0% {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body>
   <div class="background-image"></div>
+  <canvas id="particle-canvas"></canvas>
   <div class="black-overlay"></div>
   <div class="overlay">
     <img src="novuslight.png" alt="Novus Logo" class="logo" />
     <div class="content">
-      <h1>The Future is Loading...</h1>
-      <div id="mc_embed_signup">
-        <div class="form-container">
-          <form id="subscribe-form">
-            <input type="email" name="EMAIL" class="email" placeholder="Enter Email." required>
-          </form>
-          <div id="response-message"></div>
-        </div>
-      </div>
+      <h1 class="typing">The Future is Loading...</h1>
+      <form id="subscribe-form">
+        <input type="email" class="email" name="EMAIL" placeholder="Enter Email." required>
+      </form>
+      <div id="response-message"></div>
     </div>
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      // Add focus animation
-      $('input[name="EMAIL"]').on('focus', function() {
-        $(this).addClass('focused');
-      }).on('blur', function() {
-        if ($(this).val() === '') {
-          $(this).removeClass('focused');
-        }
-      });
-      
-      $('#subscribe-form').on('submit', function(e) {
-        e.preventDefault(); // Prevent the default form submission
-        
-        var email = $('input[name="EMAIL"]').val();
-        var formContainer = $('.form-container');
 
-        // Simple validation
-        if (email === '') {
-          $('#response-message').html('<p style="color: red;">Please enter an email address.</p>');
-          return;
-        }
+  <script>
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
 
-        // Apply animation to form
-        $(this).addClass('form-fade');
-        
-        $.ajax({
-          url: 'https://zone.us5.list-manage.com/subscribe/post?u=7763623dcf2bf5684d1a0ddf6&amp;id=eaa1787657&amp;f_id=00c3f8e6f0',
-          type: 'POST',
-          data: {
-            'EMAIL': email
-          },
-          success: function(response) {
-            // Create success message with animation
-            setTimeout(function() {
-              $('#response-message').html('<div class="success-message"><span class="success-checkmark"></span>Thank you for subscribing!</div>');
-            }, 500);
-          },
-          error: function() {
-            // Simulate success for demo purposes
-            setTimeout(function() {
-              $('#response-message').html('<div class="success-message"><span class="success-checkmark"></span>Thank you for subscribing!</div>');
-            }, 500);
-          }
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    function createParticles() {
+      particles = [];
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5,
+          radius: Math.random() * 2 + 1
         });
+      }
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
       });
-    });
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function updateParticles() {
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      });
+    }
+
+    function animateParticles() {
+      drawParticles();
+      updateParticles();
+      requestAnimationFrame(animateParticles);
+    }
+
+    window.onload = () => {
+      resizeCanvas();
+      createParticles();
+      animateParticles();
+    };
   </script>
 </body>
 </html>
