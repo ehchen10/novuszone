@@ -5,154 +5,179 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Novus Landing Page</title>
   <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" rel="stylesheet" />
+  <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: black;
-      font-family: 'Julius Sans One', sans-serif;
-      color: #e0e0e0;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .overlay {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      z-index: 2;
-    }
-
-    .logo {
-      position: absolute;
-      top: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 150px;
-      max-width: 40vw;
-    }
-
-    .content {
-      position: relative;
-      z-index: 3;
-      margin-top: 250px;
-      opacity: 0;
-      animation: slideInFromBottom 1.5s ease-out forwards;
-    }
-
-    h1 {
-      margin-top: 200px;
-      font-size: 24px;
-      letter-spacing: 10px;
-    }
-
-    .line {
-      margin-top: 15px;
-      padding-bottom: 5px;
-      width: 250px;
-      border: none;
-      border-bottom: 2px solid #e0e0e0;
-      background-color: transparent;
-      color: transparent;
-      text-align: center;
-      font-size: 14px;
-      letter-spacing: 2px;
-      opacity: 0.7;
-    }
-
-    .line:focus {
-      outline: none;
-      color: white;
-      font-family: 'Julius Sans One', sans-serif;
-    }
-
-    .line::placeholder {
-      color: white;
-      opacity: 1;
-      letter-spacing: 10px;
-      font-size: 14px;
-      font-family: 'Julius Sans One', sans-serif;
-    }
-
-    .background-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('coolbg.png') no-repeat center center;
-    background-size: cover;
-    z-index: 1;
+   body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: black;
+  font-family: 'Julius Sans One', sans-serif;
+  color: #e0e0e0;
+  text-align: center;
+  overflow: hidden;
 }
 
-/* On larger screens, shrink the image a bit for the original desktop look */
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center align all content */
+  z-index: 2;
+}
+
+.logo {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  max-width: 40vw;
+}
+
+.content {
+  position: relative;
+  z-index: 3;
+  opacity: 0;
+  animation: slideInFromBottom 1.5s ease-out forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center content */
+  margin-top: 0; /* Remove extra top margin */
+}
+
+h1 {
+  font-size: 24px;
+  letter-spacing: 10px;
+  margin-bottom: 20px; /* Add space below the heading */
+}
+
+input.line, #mc_embed_signup input.email {
+  margin-top: 15px;
+  padding-bottom: 5px;
+  width: 250px;
+  border: none;
+  border-bottom: 2px solid #e0e0e0;
+  background-color: transparent;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  font-family: 'Julius Sans One', sans-serif;
+}
+
+#mc_embed_signup input.email::placeholder {
+  color: white;
+  letter-spacing: 10px;
+  font-size: 14px;
+}
+
+#mc_embed_signup input.button {
+  margin-top: 15px; /* Adjust this margin to align the button better */
+  background-color: transparent;
+  border: 2px solid #e0e0e0;
+  color: #e0e0e0;
+  padding: 10px 30px;
+  font-family: 'Julius Sans One', sans-serif;
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: inline-block;
+
+
+  line-height: 1; /* Add this line to center text vertically */
+  display: flex; /* Change from inline-block to flex */
+  align-items: center; /* Center text vertically */
+  justify-content: center; /* Center text horizontally */
+}
+
+
+#mc_embed_signup input.button:hover {
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('coolbg.png') no-repeat center center;
+  background-size: cover;
+  z-index: 1;
+}
+
 @media (min-width: 769px) {
-    .background-image {
-        width: 60%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+  .background-image {
+    width: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
+.black-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2;
+}
 
+@keyframes slideInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .black-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      z-index: 2;
-    }
+#mc_embed_signup .indicates-required,
+#mc_embed_signup_scroll > h2,
+#mc_embed_signup .optionalParent,
+.refferal_badge {
+  display: none;
+}
 
-    @keyframes slideInFromBottom {
-      0% {
-        opacity: 0;
-        transform: translateY(50px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+@media (max-width: 768px) {
+  h1 {
+    font-size: 16px;
+    letter-spacing: 6px;
+  }
 
-    /* MOBILE RESPONSIVE STYLES */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 16px;
-        margin-top: 150px;
-        letter-spacing: 6px;
-      }
+  .logo {
+    top: 20px;
+    width: 120px;
+  }
 
-      .logo {
-        top: 20px;
-        width: 120px;
-      }
+  input.line, #mc_embed_signup input.email {
+    width: 80%;
+    font-size: 12px;
+    letter-spacing: 4px;
+  }
 
-      .content {
-        margin-top: 180px;
-      }
+  #mc_embed_signup input.email::placeholder {
+    font-size: 12px;
+    letter-spacing: 6px;
+  }
+}
 
-      .line {
-        width: 80%;
-        font-size: 12px;
-        letter-spacing: 4px;
-      }
-
-      .line::placeholder {
-        font-size: 12px;
-        letter-spacing: 6px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -162,8 +187,44 @@
     <img src="novuslight.png" alt="Novus Logo" class="logo" />
     <div class="content">
       <h1>The Future is Loading...</h1>
-      <input class="line" type="text" placeholder="Enter Email" />
+      <div id="mc_embed_signup">
+        <form id="subscribe-form">
+          <input type="email" name="EMAIL" class="email" placeholder="Enter Email." required>
+
+        </form>
+        <div id="response-message"></div>
+      </div>
     </div>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#subscribe-form').on('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
+        
+        var email = $('input[name="EMAIL"]').val();
+
+        // Simple validation
+        if (email === '') {
+          $('#response-message').html('<p style="color: red;">Please enter an email address.</p>');
+          return;
+        }
+
+        $.ajax({
+          url: 'https://zone.us5.list-manage.com/subscribe/post?u=7763623dcf2bf5684d1a0ddf6&amp;id=eaa1787657&amp;f_id=00c3f8e6f0',
+          type: 'POST',
+          data: {
+            'EMAIL': email
+          },
+          success: function(response) {
+            $('#response-message').html('<p style="color: green;">Thank you for subscribing!</p>');
+          },
+          error: function() {
+            $('#response-message').html('<p style="color: green;">Thank you for subscribing!</p>');
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
