@@ -3,45 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website in Progress</title>
+    <title>Novus Landing Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap" rel="stylesheet">
     <style>
-        * {
+        @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
+
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: "Monaco", sans-serif;
-            background-color: #1a1a1a;
-            color: #fff;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             height: 100vh;
+            background-color: black; /* Black background */
+            font-family: 'Julius Sans One', sans-serif;
+            color: #e0e0e0;
             text-align: center;
         }
-        .container {
-            max-width: 600px;
+
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Align content towards the top */
+            z-index: 2;
         }
+
+        .logo {
+            position: absolute;
+            top: 40px;
+            left: 40%;
+            width: 20%;;
+        }
+
+        .content {
+            position: relative;
+            z-index: 3;
+            margin-top: 250px; /* Further lower the text */
+            opacity: 0; /* Initially hidden */
+            animation: slideInFromBottom 1.5s ease-out forwards; /* Animation applied */
+        }
+
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            margin-top: 200px;
+            font-size: 24px;
+            letter-spacing: 15px;
         }
-        p {
-            font-size: 1.2em;
-            opacity: 0.8;
+
+        /* Line styling for the "invisible" text box */
+        .line {
+            margin-top: 15px;
+            padding-bottom: 5px;
+            width: 250px;
+            border: none;
+            border-bottom: 2px solid #e0e0e0;
+            background-color: transparent;
+            color: transparent;
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 2px;
+            opacity: 0.7;
+        }
+
+        .line:focus {
+            outline: none;
+            color: white;
+            font-family: 'Julius Sans One', sans-serif;
+        }
+
+        .line::placeholder {
+            color: white;
+            opacity: 1;
+            letter-spacing: 10px;
+            font-size: 14px;
+            line-height: normal; 
+            font-family: 'Julius Sans One', sans-serif;
+        }
+
+        /* Background Image */
+        .background-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the image */
+            width: 60%; /* Shrink image width */
+            height: 100%; /* Shrink image height */
+            background: url('coolbg.png') no-repeat center center/cover;
+            background-position: center center; /* Ensure image is centered properly */
+            z-index: 1;
+        }
+
+        /* Black overlay with more opacity */
+        .black-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.80); /* Increased opacity for dimming */
+            z-index: 2;
+        }
+
+        /* Keyframes for smooth bottom-to-top animation */
+        @keyframes slideInFromBottom {
+            0% {
+                opacity: 0;
+                transform: translateY(50px); /* Start below the screen */
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0); /* End at normal position */
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>hey! 🚀</h1>
-        <p>our team is at work bringing dreams to life 💭.</p>
-        <p>welcome to the shop of the future 🔥!</p>
-        <h2>coming may 2025</h2>
-        <h2>we're gonna take the world by storm.</h2>
-        <p>to join our email list, email "join" to</p>
-        <h2>help@novus.zone</h2>
+    <div class="background-image"></div> <!-- Background image section -->
+    <div class="black-overlay"></div> <!-- Black overlay with opacity -->
+    <div class="overlay">
+        <img src="novuslight.png" alt="Novus Logo" class="logo">
+        <div class="content">
+            <h1>The Future is Loading...</h1>
+
+            <input class="line" type="text" placeholder="Get Notified">
+        </div>
     </div>
 </body>
 </html>
