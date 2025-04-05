@@ -128,6 +128,8 @@
       letter-spacing: 2px;
       opacity: 0.7;
       transition: all 0.3s ease;
+      font-family: 'Julius Sans One', sans-serif;
+      text-transform: uppercase;
     }
 
     input.email:focus {
@@ -143,6 +145,7 @@
       letter-spacing: 10px;
       font-size: 14px;
       transition: opacity 0.3s ease;
+      text-transform: uppercase;
     }
 
     input.email:focus::placeholder {
@@ -158,6 +161,101 @@
         opacity: 1;
         transform: translateY(0);
       }
+    }
+
+    /* Submit button style */
+    .submit-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 8px 20px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-family: 'Julius Sans One', sans-serif;
+      letter-spacing: 5px;
+      font-size: 12px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Thank You Popup Styles */
+    .thank-you-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(15, 15, 15, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 30px 40px;
+      z-index: 10;
+      text-align: center;
+      width: 350px;
+      max-width: 80%;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .thank-you-popup h2 {
+      color: white;
+      font-size: 20px;
+      margin-bottom: 15px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+    }
+
+    .thank-you-popup p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      letter-spacing: 2px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .thank-you-popup .close-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 8px 20px;
+      cursor: pointer;
+      font-family: 'Julius Sans One', sans-serif;
+      letter-spacing: 5px;
+      font-size: 12px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .thank-you-popup .close-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(3px);
+      z-index: 9;
+      display: none;
     }
 
     /* Mobile responsive styles */
@@ -197,6 +295,27 @@
         letter-spacing: 5px;
         font-size: 12px;
       }
+
+      .thank-you-popup {
+        padding: 25px 30px;
+      }
+
+      .thank-you-popup h2 {
+        font-size: 18px;
+        letter-spacing: 3px;
+      }
+
+      .thank-you-popup p {
+        font-size: 12px;
+        letter-spacing: 1px;
+      }
+
+      .popup-close,
+      .submit-btn {
+        padding: 6px 15px;
+        font-size: 10px;
+        letter-spacing: 3px;
+      }
     }
 
     /* Fix for very small screens */
@@ -213,6 +332,11 @@
 
       .content {
         margin-top: 120px;
+      }
+
+      .thank-you-popup h2 {
+        font-size: 14px;
+        letter-spacing: 3px;
       }
     }
 
@@ -239,9 +363,18 @@
       <h1 class="typing">The Future is Loading...</h1>
       <form id="subscribe-form">
         <input type="email" class="email" name="EMAIL" placeholder="Enter Email." required>
+        <button type="submit" class="submit-btn">Subscribe</button>
       </form>
-      <div id="response-message"></div>
+      <p id="response-message" style="color: white; display: none; text-align: center; margin-top: 20px;"></p>
     </div>
+  </div>
+
+  <!-- Thank You Popup -->
+  <div class="popup-overlay" id="popup-overlay"></div>
+  <div class="thank-you-popup" id="thank-you-popup">
+    <h2>Thank You</h2>
+    <p>You have successfully joined our mailing list. We'll keep you updated on our latest developments.</p>
+    <button class="close-btn" id="close-popup">Close</button>
   </div>
 
   <script>
@@ -330,11 +463,56 @@
       }
     }
 
-    window.addEventListener('resize', adjustTypingAnimation);
+    // AJAX form submission
+    document.getElementById('subscribe-form').addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent default form submission
+      
+      const emailInput = this.querySelector('input.email');
+      const email = emailInput.value.trim();
+      
+      if (email) {
+        // Create FormData object
+        const formData = new FormData();
+        formData.append('EMAIL', email);
+        
+        // Perform AJAX request
+        fetch('https://zone.us5.list-manage.com/subscribe/post?u=7763623dcf2bf5684d1a0ddf6&id=eaa1787657', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Clear the email input
+          emailInput.value = '';
+          
+          // Show the thank you popup
+          document.getElementById('popup-overlay').style.display = 'block';
+          document.getElementById('thank-you-popup').style.display = 'block';
+        })
+        .catch(error => {
+            emailInput.value = '';
+          
+          // Show the thank you popup
+          document.getElementById('popup-overlay').style.display = 'block';
+          document.getElementById('thank-you-popup').style.display = 'block';
+        });
+      }
+    });
+
+    // Close popup when button is clicked
+    document.getElementById('close-popup').addEventListener('click', function() {
+      document.getElementById('popup-overlay').style.display = 'none';
+      document.getElementById('thank-you-popup').style.display = 'none';
+    });
+
+    // Close popup when clicking outside the popup area
+    document.getElementById('popup-overlay').addEventListener('click', function() {
+      document.getElementById('popup-overlay').style.display = 'none';
+      document.getElementById('thank-you-popup').style.display = 'none';
+    });
 
     window.onload = () => {
       resizeCanvas();
-      createParticles();
       animateParticles();
       adjustTypingAnimation();
     };
